@@ -5,7 +5,7 @@ $query = $db->query($sql);
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
-    <a href="index.php" class="navbar-brand">More Boutique</a>
+    <a href="index.php" class="navbar-brand">Liem Glow</a>
     <ul class="nav navbar-nav">
       <?php
       foreach ($query as $key) :
