@@ -3,9 +3,10 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/SandyShop/core/init.php';
 if(!is_logged_in()){
   login_error_redirect();
 }
-include 'includes/head.php';
+include 'includes/head.php'; // include file
 include 'includes/navigation.php';
 
+// update produk
 if (isset($_GET['repair'])) {
 	$repairID = (int)$_GET['repair'];
 	$repairID = sanitize($repairID);
@@ -14,6 +15,7 @@ if (isset($_GET['repair'])) {
 	header('Location: archived.php');
 }
 
+// delete produk
 if (isset($_GET['delete'])) {
 	$delID = (int)$_GET['delete'];
 	$delID = sanitize($delID);
@@ -22,6 +24,7 @@ if (isset($_GET['delete'])) {
 	header('Location: archived.php');
 }
 
+// listing produk
 $Tsql 	= "SELECT * FROM products WHERE deleted = 1";
 $Tquery = $db->query($Tsql);
 ?>
@@ -66,3 +69,8 @@ $Tquery = $db->query($Tsql);
 </div>
 
 <?php include 'includes/footer.php'; ?>
+<script type="text/javascript">
+	$(document).ready(function () {
+	  	document.title = "Produk Archived";
+    });
+</script>

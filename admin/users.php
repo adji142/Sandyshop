@@ -131,3 +131,8 @@
   </table>
 </div>
 <?php } include 'includes/footer.php'; ?>
+<script type="text/javascript">
+  $(document).ready(function () {
+      document.title = "Users";
+    });
+</script>

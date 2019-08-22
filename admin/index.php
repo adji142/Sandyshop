@@ -12,11 +12,11 @@ if($cek=='user'){
 include 'includes/head.php';
 include 'includes/navigation.php';
 
-$txnQuery = "SELECT a.id_orders,c.nama_lengkap,SUM(b.jumlah * d.Harga) Jumlah,a.tgl_order FROM orders a
+$txnQuery = "SELECT a.id_orders,c.nama_lengkap,a.no_resi,SUM(b.jumlah * d.Harga) Jumlah,a.tgl_order FROM orders a
 LEFT JOIN ordersdetail b on a.id_orders = b.orders_id
 LEFT JOIN pembelian c on a.id_customer = c.id_kustomer
 LEFT JOIN produk d on b.id_produk = d.id_produk
-GROUP BY a.id_orders,c.nama_lengkap,a.tgl_order";
+GROUP BY a.id_orders,c.nama_lengkap,a.tgl_order,a.no_resi";
 $query = $db->query($txnQuery);
 ?>
 <div class="container">
@@ -29,7 +29,7 @@ $query = $db->query($txnQuery);
       <tbody>
         <?php foreach($query as $q): ?>
         <tr>
-          <td><a href="orders.php?txn_id=<?=$q['id_orders'];?>" class="btn btn-xs btn-info">Detail</a></td>
+          <td><a href="#" id="kirimmodal" <?=$q['no_resi'] != '' ? 'disabled' : '';?> class="btn btn-xs btn-info" onclick="OpenModal(<?=$q['id_orders'];?>)">Detail</a></td>
           <td><?=$q['nama_lengkap'];?></td>
           <td><?=money($q['Jumlah']);?></td>
           <td><?=indonesian_date($q['tgl_order']);?></td>
@@ -63,6 +63,7 @@ $query = $db->query($txnQuery);
       if ($thisYrQ) {
         foreach($thisYrQ as $year){
           $month = date("m",strtotime($year['tgl_order']));
+          // print_r($month);
           if (!array_key_exists($month,$current)) {
             $current[(int)$month] += $year['Jumlah'];
           }else{
@@ -134,7 +135,7 @@ $query = $db->query($txnQuery);
           <th>Stock</th>
           <th>Kode Produk</th>
           <th>Nama Produk</th>
-          <th>Nama Kategori</th>
+          <!-- <th>Nama Kategori</th> -->
         </thead>
         <tbody>
           <?php foreach($lowItems as $item): ?>
@@ -150,3 +151,40 @@ $query = $db->query($txnQuery);
   </div>
 </div>
 <?php include 'includes/footer.php';?>
+
+<div class="modal fade" id="kirim" tabindex="-1" role="dialog" aria-labelledby="details-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+      <button class="close" type="button" onclick="CloseModal()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title text-center">Kirim Produk</h4>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row">
+          <form action="#" method="post">
+            <div class="form-group">
+                <label for="quantity">Nomer Resi:</label>
+                <input type="text" name="resi" id="resi" class="form-control">
+                <input type="hidden" name="id_orders" id="id_orders" class="form-control">
+              <div class="col-xs-9"></div>
+            </div><br>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="CloseModal()">Close</button>
+      <button class="btn btn-warning" onclick="Kirim(); return false;"><span class="glyphicon glyphicon-shopping-cart"></span>Kirim</button>
+    </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function () {
+      document.title = "Main Menu";
+    });
+</script>
