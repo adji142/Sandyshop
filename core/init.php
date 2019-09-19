@@ -1,5 +1,5 @@
 <?php
-$db = mysqli_connect('koprasiwanitausahamandiri.com','u6018530_root','admin123','u6018530_sandytoko');
+$db = mysqli_connect('localhost','aistrick_root','lagis3nt0s4','aistrick_sandytoko');
 if (mysqli_connect_errno()) {
   echo "Koneksi database gagal, Error 404:".mysqli_connect_errno();
   die();
